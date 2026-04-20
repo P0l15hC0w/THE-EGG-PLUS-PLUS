@@ -19,3 +19,6 @@
 <img src="src\img\thelaughingbassoon.png">
 
 i don't think this project should be ever accredited with my portfolio.
+
+## ACCESSIBILITY NOTICE
+- THIS GAME WILL RUN **ONLY ON WINDOWS PLATFORMS**, SINCE IT IS BASED ON **WINDOWS CMD CLEARING COMMANDS**
