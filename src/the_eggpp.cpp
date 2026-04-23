@@ -46,23 +46,25 @@ void change_status(bool new_status){
 
 void jeremiasz_worker(){
     while (true){
-        uint16_t level_copy;
-        
-        bool status_copy;{
-            lock_guard<mutex> lock(game_mutex);
-            status_copy = store_status;
-        }
-        float multiplier_copy;{
-            lock_guard<std::mutex> lock(game_mutex);
+        uint16_t level_copy;{
+            std::lock_guard<std::mutex> lock(game_mutex);
             level_copy = jeremiasz_level;
-            multiplier_copy = multiplier;
-        }
+        }        
         if (level_copy > 0){
             wait(static_cast<uint32_t>(ceil(1000.0 / level_copy)));
             unsigned long long money_copy;{
                 std::lock_guard<std::mutex> lock(game_mutex);
                 money_copy = money;
             }
+            bool status_copy;{
+                lock_guard<mutex> lock(game_mutex);
+                status_copy = store_status;
+            }
+            float multiplier_copy;{
+                lock_guard<std::mutex> lock(game_mutex);
+                multiplier_copy = multiplier;
+            }
+
             lock_guard<std::mutex> lock(game_mutex);
             money += static_cast<unsigned long long>((10 * multiplier_copy) * level_copy);
             if (!status_copy){
@@ -79,6 +81,9 @@ void jeremiasz_worker(){
         }
     }   
 }
+
+
+
 void store(){
     clear();
     while (true) {
@@ -165,11 +170,11 @@ void store(){
                     else {
                         clear();
                         cout << "\nNOT ENOUGH MONEY TO UPGRADE THE MIGHT JEREMIASZ. YOU REQUIRE " << jeremiasz_upgrade_price - money << " ZIMBABWE DOLLARS MORE TO ACQUIRE THE UPGRADE.\n";
-                        cout << "\nDEBUG:"
+                        /*cout << "\nDEBUG:"
                             << "\nmoney = " << money
                             << "\nprice = " << jeremiasz_upgrade_price
                             << "\njeremiasz = " << jeremiasz
-                            << "\nlevel = " << jeremiasz_level << endl;
+                            << "\nlevel = " << jeremiasz_level << endl;*/
                     }
                     break;
                 }   
